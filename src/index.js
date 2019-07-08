@@ -132,7 +132,8 @@ const evalRPN = postfixExpression => {
   });
   return stack.pop();
 };
-
-export const calculateByRPN = (expression) => {
-  return evalRPN(convert2PostfixExpression(expression))
+module.exports = {
+  calculateByRPN: (expression) => {
+    return evalRPN(convert2PostfixExpression(expression))
+  }
 }
