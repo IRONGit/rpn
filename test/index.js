@@ -1,9 +1,18 @@
 require('should');
-const { calculateByRPN } = require('../src');
+const { genExpression, calculateByRPN } = require('../src')
+// 生成表达式的数量
+let expressionCount = 1000
+// 表达式参数个数的范围 n + 2
+let paramsMaxCount = 50
 
-describe('', () => {
-  it('should equal', () => {
-    calculateByRPN('3 * (2 * 6 + 7 * (3 - 2) + 2 * (4 * 4 - 5 * 5)) * 1')
-    .should.be.eql(3 * (2 * 6 + 7 * (3 - 2) + 2 * (4 * 4 - 5 * 5)) * 1)
-  })
-})
+for (let i = 0, len = expressionCount; i < len; i++) {
+  const expression = genExpression(Math.floor(Math.random() * paramsMaxCount + 2))
+  if (expression) {
+    describe(expression, () => {
+      it('should equal', () => {
+        calculateByRPN(expression)
+        .should.be.eql(eval(expression))
+      })
+    })
+  }
+}

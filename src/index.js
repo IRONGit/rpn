@@ -102,6 +102,7 @@ const convert2PostfixExpression = infixExpression => {
 };
 // 3 * (2 * 6 + 7 * (3 - 2) + 2 * (4 * 4 - 5 * 5)) * 1
 // "3 2 6 * 7 3 2 - * + 2 4 4 * 5 5 * - * 1 * + *"
+// 3-68.26540323674905-65+86.23958164294369*64*70/32.026053947622636-17.208749962368806+23*54.16003213312568
 const evalRPN = postfixExpression => {
   const operators = ['+', '-', '*', '/', '(', ')'];
   let stack = new Stack();
@@ -132,7 +133,22 @@ const evalRPN = postfixExpression => {
   });
   return stack.pop();
 };
+const genExpression = (n) => {
+  const operators = ['+', '-', '*', '/']
+  const operaorsSize = operators.length
+  const numbers = []
+  for (let i = 0, len = n; i < len; i++) {
+    let number = Math.random() < 0.5 ? Math.floor(Math.random() * 100) : Math.random() * 100
+    numbers.push(number)
+    if (i !== len - 1) {
+      let operator = operators[Math.floor(Math.random() * operaorsSize)]
+      numbers.push(operator)
+    }
+  }
+  return numbers.join('')
+}
 module.exports = {
+  genExpression,
   calculateByRPN: (expression) => {
     return evalRPN(convert2PostfixExpression(expression))
   }
