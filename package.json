@@ -17,7 +17,9 @@
   },
   "homepage": "https://github.com/IRONGit/rpn#readme",
   "devDependencies": {
+    "cli-progress": "^2.1.1",
     "mocha": "^6.1.4",
+    "ora": "^3.4.0",
     "should": "^13.2.3"
   }
 }
