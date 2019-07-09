@@ -35,11 +35,14 @@ const convert2PostfixExpression = infixExpression => {
       let isParenthese = parentheses.includes(trimmed);
       if (isOperator || isParenthese) {
         if (operatorStack.isEmpty()) {
+          // 栈顶为空 入栈          
           operatorStack.push(trimmed);
         } else if (isParenthese) {
           if (trimmed === '(') {
+            // 如果是左括号 入栈
             operatorStack.push(trimmed);
           } else {
+            // 如果是右括号 出栈 直到栈顶元素为左括号 或者栈为空
             let top = operatorStack.pop();
             while (top !== '(') {
               charStack.push(top);
@@ -50,39 +53,40 @@ const convert2PostfixExpression = infixExpression => {
             }
           }
         } else if (isOperator) {
-          if (operatorStack.isEmpty()) {
+          // 当前元素是运算符 与栈顶运算符判断优先级
+          let top = operatorStack.pop();
+          if (top === '(') {
+            // 栈顶是左括号 则当前运算符入栈
+            operatorStack.push(top);
             operatorStack.push(trimmed);
           } else {
-            let top = operatorStack.pop();
-            if (top === '(') {
+            if (isHigherPriority(trimmed, top)) {
+              // 当前运算符优先级比栈顶运算符优先级高 将当前运算符入栈
               operatorStack.push(top);
               operatorStack.push(trimmed);
             } else {
-              if (isHigherPriority(trimmed, top)) {
-                // 当前运算符优先级比栈顶运算符优先级高
-                operatorStack.push(top);
+              // 否则一直出栈 并压入char栈
+              while (
+                !operatorStack.isEmpty() &&
+                !isHigherPriority(trimmed, top)
+              ) {
+                charStack.push(top);
+                top = operatorStack.pop();
+              }
+              if (operatorStack.isEmpty()) {
+                // 如果栈被清空 比较当前运算符和最后一个运算符优先级
+                if (!isHigherPriority(trimmed, top)) {
+                  // 如果当前运算符优先级高 则将栈中最后一个运算符压入charStack
+                  charStack.push(top);
+                } else {
+                  // 否则将最后一个运算符重新压入栈中
+                  operatorStack.push(top);
+                }
                 operatorStack.push(trimmed);
               } else {
-                // 否则一直出栈 并压入char栈
-                while (
-                  !operatorStack.isEmpty() &&
-                  !isHigherPriority(trimmed, top) &&
-                  top !== '('
-                ) {
-                  charStack.push(top);
-                  top = operatorStack.pop();
-                }
-                if (operatorStack.isEmpty()) {
-                  if (!isHigherPriority(trimmed, top)) {
-                    charStack.push(top);
-                  } else {
-                    operatorStack.push(top);
-                  }
-                  operatorStack.push(trimmed);
-                } else {
-                  operatorStack.push(top);
-                  operatorStack.push(trimmed);
-                }
+                // 如果在出栈的过程中 遇到了比当前运算符优先级高的运算符 则TODO：
+                operatorStack.push(top);
+                operatorStack.push(trimmed);
               }
             }
           }

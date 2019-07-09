@@ -5,10 +5,10 @@ const { performance } = require('perf_hooks');
 const { genExpression, calculateByRPN } = require('../src')
 
 // 生成表达式的数量
-let expressionCount = 1000
+let expressionCount = 1
 // 表达式参数个数的范围 n + 2
-let paramsMaxCount = 5000
-let paramsMinCount = 5000
+let paramsMaxCount = 50
+let paramsMinCount = 50
 // 最大差值
 let maxDiff = 0
 // 最长执行时间
@@ -36,7 +36,7 @@ for (let i = 0, len = expressionCount; i < len; i++) {
   }
 }
 progressBar.stop()
-console.log(`在表达式数量为${expressionCount}个，每个表达式参数个数范围为${paramsMinCount}~${paramsMaxCount}个的情况下：`)
+console.log(`在表达式数量为${expressionCount}个，每个表达式参数个数范围为${paramsMinCount}~${paramsMaxCount + paramsMinCount}个的情况下：`)
 console.log('最大时间差为：', maxDiff, 'ms')
 console.log('最长执行时间为：', maxExecDuration, 'ms')
-// spinner.stop()
+console.log('内存占用：', process.memoryUsage().rss / 1024 / 1024, 'mb')
