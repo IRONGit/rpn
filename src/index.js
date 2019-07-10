@@ -82,12 +82,11 @@ const convert2PostfixExpression = infixExpression => {
                   // 否则将最后一个运算符重新压入栈中
                   operatorStack.push(top);
                 }
-                operatorStack.push(trimmed);
               } else {
                 // 如果在出栈的过程中 遇到了比当前运算符优先级高的运算符 则TODO：
                 operatorStack.push(top);
-                operatorStack.push(trimmed);
               }
+              operatorStack.push(trimmed);
             }
           }
         }
